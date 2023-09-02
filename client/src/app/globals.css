@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #222222;
+  }
+}
+
+@layer components {
+  .action-btn-1 {
+    @apply text-3xl text-gray-400 hover:text-white transition;
+  }
+
+  .action-btn-2 {
+    @apply text-4xl text-gray-200 transition;
+  }
+}
