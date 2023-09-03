@@ -1,23 +1,23 @@
 import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import UserModel from '../schemas/user.schema.js';
 import { ClientError, ServerError } from '../middlewares/error.handler.js';
 import { IRouteSignIn, IRouteSignUp } from '../types/routes.objects.js';
 import { EStatusCode } from '../constants/statusCode.js';
 import { jwtPrivateKey } from '../main.js';
+import { Collection } from '../mongodb/index.js';
 
 export const signUpHandler: RequestHandler = async (req, res, next) => {
     try {
         const { name, email, password }: IRouteSignUp = req.body;
-        const findEmail = await UserModel.findOne({email});
+        const findEmail = await Collection.User.findOne({email});
     
         if(findEmail) {
             throw new ClientError('User already exists', EStatusCode.BAD_REQUEST);
         }
     
         const _password = await bcrypt.hash(password, 10);
-        const newUser = await UserModel.create({
+        const newUser = await Collection.User.create({
             email, name, password: _password
         });
     
@@ -32,7 +32,7 @@ export const signInHandler: RequestHandler = async (req, res, next) => {
     try {
         const { email, password }: IRouteSignIn = req.body;
     
-        const user = await UserModel.findOne({email});
+        const user = await Collection.User.findOne({email});
     
         if(!user) {
             throw new ClientError('Invalid credentials', EStatusCode.NOT_FOUND);

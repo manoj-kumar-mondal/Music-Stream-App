@@ -1,6 +1,6 @@
+import dotenv from 'dotenv';
 import { Console } from './config/console.js';
 import { startServer } from './config/server.js';
-import dotenv from 'dotenv';
 
 dotenv.config();
 const mongoUri = process.env.MONGODB_URI || '';
@@ -10,5 +10,5 @@ export const jwtPrivateKey = process.env.JWT_PRIVATE_KEY || '';
 try {
     startServer(port, mongoUri);
 } catch (error: any) {
-    Console.Log(error?.message);
+    Console.Error(error?.message);
 }

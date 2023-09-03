@@ -32,12 +32,19 @@ export class ClientError extends RouteError{
     }
 }
 
-export class ServerError extends RouteError {
+export class ServerRouteError extends RouteError {
     constructor(message: string, statusCode: EStatusCode) {
         if(statusCode >=600 || statusCode < 500) {
             throw new DevError(`Status code ${statusCode}  is invalid for serverError`);
         }
         super(message, statusCode);
-        this.name = EErrorType.SERVER_ERROR
+        this.name = EErrorType.SERVER_ROUTE_ERROR
+    }
+}
+
+export class ServerError extends Error {
+    constructor(message: string) {
+        super(message);
+        super.name = EErrorType.INTERNAL_SERVER_ERROR
     }
 }
