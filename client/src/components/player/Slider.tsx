@@ -23,7 +23,7 @@ const Slider: React.FC<SliderProps> = ({ className }) => {
 
     return (
         <div 
-            className={`w-[80%] py-1 ${className ? className : ''}`}
+            className={`w-[80%] py-1 cursor-pointer ${className ? className : ''}`}
             onMouseEnter={handleMouseHover}
             onMouseLeave={handleMouseHover}
             onClick={handleOnclick}

@@ -9,3 +9,13 @@ export interface IRouteSignUp {
     password: string;
     cpassword?: string;
 }
+
+export interface IRouteUploadStreamData {
+    title: string;
+    artist: string;
+}
+
+export interface IRouteUploadStreamFile {
+    musicFile?: {[fieldname: string]: File[]; } | File[];
+    thumbelinaFile?: {[fieldname: string]: File[]; } | File[];
+}

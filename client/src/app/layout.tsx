@@ -1,3 +1,4 @@
+import ReduxProvider from '@/redux/Provider';
 import './globals.css'
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={fig.className}>{children}</body>
+      <body className={fig.className}>
+        <ReduxProvider>
+          {children}
+        </ReduxProvider>
+      </body>
     </html>
   )
 }

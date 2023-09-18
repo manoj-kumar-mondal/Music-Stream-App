@@ -25,7 +25,11 @@ export class Console {
     static ApiResponseLog(req: Request, res: Response, time: number = 0) {
         
         if(res.statusCode >= 200 && res.statusCode < 300) {
-            return console.log(`[${Console.generateCurrentDateAndTime()}] [ ---> ] [Success(${res.statusCode})] ( ${req.method} - ${req.path} ) ${time} sec`);
+            if(res.statusCode == 206) {
+                console.log('content sending 206');
+            } else {
+                console.log(`[${Console.generateCurrentDateAndTime()}] [ ---> ] [Success(${res.statusCode})] ( ${req.method} - ${req.path} ) ${time} sec`);
+            }
         } else {
             const error = res.get('error');
             if(error) {

@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response } from 'express';
 import validator from 'validator';
-import { IRouteSignIn, IRouteSignUp } from '../types/routes.objects.js';
+import { IRouteSignIn, IRouteSignUp, IRouteUploadStreamData } from '../types/routes.objects.js';
 import { ClientError } from './error.handler.js';
 import { EStatusCode } from '../constants/statusCode.js';
 
@@ -62,3 +62,41 @@ export const signUpValidator: RequestHandler = (req, res, next) => {
 
     next();
 };
+
+
+export const uploadStreamValidator: RequestHandler = (req, res, next) => {
+    const { title, artist }: IRouteUploadStreamData = req.body;
+    
+    if(!title) {
+        throw new ClientError('Title is qequired', EStatusCode.UNPROCESSABLE_CONTENT);
+    }
+
+    if(!artist) {
+        throw new ClientError('Artist is required', EStatusCode.UNPROCESSABLE_CONTENT);
+    }
+
+    //@ts-ignore
+    const file1 = req.files['musicFile'];
+
+    if(!file1) {
+        throw new ClientError('Music File is required', EStatusCode.UNPROCESSABLE_CONTENT);
+    }
+
+    next();
+}
+
+export const downloadStreamValidator: RequestHandler = (req, res, next) => {
+    const { range } = req.headers;
+    const id = req.params.id;
+    console.log(range);
+
+    if(!range) {
+        throw new ClientError('Range Parameter required to process this request', EStatusCode.RANGE_NOT_SATISFIED);
+    }
+    
+    if(!id) {
+        throw new ClientError('id not found for this request', EStatusCode.UNPROCESSABLE_CONTENT);
+    }
+
+    next();
+}

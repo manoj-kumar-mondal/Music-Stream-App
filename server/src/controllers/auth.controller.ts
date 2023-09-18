@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { ClientError, ServerError } from '../middlewares/error.handler.js';
+import { ClientError } from '../middlewares/error.handler.js';
 import { IRouteSignIn, IRouteSignUp } from '../types/routes.objects.js';
 import { EStatusCode } from '../constants/statusCode.js';
 import { jwtPrivateKey } from '../main.js';
@@ -21,7 +21,7 @@ export const signUpHandler: RequestHandler = async (req, res, next) => {
             email, name, password: _password
         });
     
-        res.status(201).json({ message: 'User registered Successfully' });
+        res.status(EStatusCode.CREATED).json({ message: 'User registered Successfully' });
 
     } catch (error) {
         next(error);
@@ -63,7 +63,7 @@ export const signInHandler: RequestHandler = async (req, res, next) => {
             sameSite: 'strict'
         });
 
-        res.status(200).json({ data: userData, message: 'Signin Successful' });
+        res.status(EStatusCode.OK).json({ data: userData, message: 'Signin Successful' });
         
     } catch (error) {
         next(error);

@@ -12,6 +12,7 @@ export enum EStatusCode {
     FORBIDDEN = 403,
     NOT_FOUND = 404,
     REQUEST_TIMEOUT = 408,
+    RANGE_NOT_SATISFIED = 416,
     UNPROCESSABLE_CONTENT = 422,
 
     /* Server error responses */

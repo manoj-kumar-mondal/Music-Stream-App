@@ -2,14 +2,17 @@ import { MongoClient, GridFSBucket } from 'mongodb';
 import { Console } from '../config/console.js';
 import { ServerError } from '../middlewares/error.handler.js';
 import { DataBaseName, DbCollections } from './constants.js';
+import { IGridFsBuckets } from '../types/mongodb.types.js';
 
 export class Mongo {
     static mongoInstance: Mongo;
     static mongoClient: MongoClient;
-    static gridFSBucket: GridFSBucket;
+    static gridFsBuckets: IGridFsBuckets;
+    static retryCount: number;
 
     private constructor(mongouri: string) {
         Mongo.mongoClient = new MongoClient(mongouri);
+        Mongo.retryCount = 0;
         this.connect();
     }
 
@@ -28,13 +31,30 @@ export class Mongo {
                 }
             });
 
-            Mongo.gridFSBucket = new GridFSBucket(db, {
-                bucketName: 'upload_song'
+            const Bucket1 = new GridFSBucket(db, {
+                bucketName: 'music_source'
             });
+
+            const Bucket2 = new GridFSBucket(db, {
+                bucketName: 'music_thumbelina'
+            });
+
+            Mongo.gridFsBuckets = {
+                songs: Bucket1, thumbelina: Bucket2
+            }
 
             Console.Log('Database Connection Successful');
         } catch (error: any) {
             Console.Error(`Database connection failed: ${error.message}`);
+            Console.Log(`Retrying to connect to Database`);
+            this.retryToConnnect();
+            Mongo.retryCount++;
+        }
+    }
+
+    private retryToConnnect() {
+        if(Mongo.retryCount < 3) {
+            this.connect();
         }
     }
 

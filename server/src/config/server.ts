@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import { Console } from './console.js';
 import {
     handleApiRequest, 
@@ -10,6 +11,9 @@ import { Mongo, Collection } from '../mongodb/index.js';
 
 const app = express();
 
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://127.0.0.1:5500']
+}));
 app.use(handleApiRequest);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
